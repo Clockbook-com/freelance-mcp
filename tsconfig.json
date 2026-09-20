@@ -1,0 +1,35 @@
+{
+    "compilerOptions": {
+        "target": "ES2022",
+        "lib": ["ES2022"],
+        /*
+         * NodeNext, not `bundler`, and unlike `surface/tsconfig.json` next door.
+         * Nothing bundles this package: the `bin` is run by Node directly out of
+         * `dist`, so the module resolution the compiler models has to be the one
+         * Node actually performs. That is also why every relative import in
+         * `src` carries a `.js` extension - an ESM package without them resolves
+         * at compile time and throws ERR_MODULE_NOT_FOUND at run time, which is
+         * the worst of both.
+         */
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "outDir": "dist",
+        "rootDir": "src",
+        "strict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        /*
+         * The SDK ships a large generated type surface (zod schemas for every
+         * protocol message). Checking it buys nothing here and costs seconds on
+         * every build - the surface package skips lib checking for the same
+         * reason.
+         */
+        "skipLibCheck": true,
+        "declaration": false,
+        "sourceMap": true
+    },
+    "include": ["src"]
+}
