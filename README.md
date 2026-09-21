@@ -104,13 +104,27 @@ per-request lookup and not a nightly sweep.
 
 ### 4. Build the server
 
-This package sits outside the yarn workspace, like `freelance/surface` — its
-own lockfile, isolated from monorepo hoisting skew:
+Clone this repository and build it. There is nothing to install from a
+registry — the server runs from `dist/`, which is gitignored, so the build is
+not optional:
 
 ```bash
-cd freelance/mcp
+git clone https://github.com/Clockbook-com/freelance-mcp.git
+cd freelance-mcp
 npm install
 npm run build
+```
+
+`npm run build` also validates all 23 tool documents against the freelance
+subgraph SDL when it can reach it. From a standalone clone it cannot, so it
+says so and skips rather than failing a check it has no way to perform — see
+the note at the top of this file for how to run it anyway.
+
+Note the absolute path of `dist/index.js` when this finishes; the next step
+needs it:
+
+```bash
+echo "$PWD/dist/index.js"
 ```
 
 ### 5. Wire it into your client
@@ -123,7 +137,7 @@ npm run build
     "mcpServers": {
         "freelance": {
             "command": "node",
-            "args": ["/absolute/path/to/packages-enterprise/freelance/mcp/dist/index.js"],
+            "args": ["/absolute/path/to/freelance-mcp/dist/index.js"],
             "env": {
                 "FREELANCE_API_TOKEN": "<your platform API token>",
                 "FREELANCE_GRAPHQL_URL": "https://freelance-backend.clockbook-app-v10.cdebase.dev/graphql"
@@ -142,7 +156,7 @@ this from your shell's working directory.
 claude mcp add freelance \
   --env FREELANCE_API_TOKEN=<your platform API token> \
   --env FREELANCE_GRAPHQL_URL=https://freelance-backend.clockbook-app-v10.cdebase.dev/graphql \
-  -- node /absolute/path/to/packages-enterprise/freelance/mcp/dist/index.js
+  -- node /absolute/path/to/freelance-mcp/dist/index.js
 ```
 
 **Cursor** — `.cursor/mcp.json` in the project, or `~/.cursor/mcp.json`
