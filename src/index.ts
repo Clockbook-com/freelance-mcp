@@ -38,6 +38,8 @@
  * Diagnostics go to stderr, here and in `config.ts`.
  */
 
+import { createRequire } from 'node:module';
+
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
@@ -47,7 +49,16 @@ import { describeMissingToken, loadConfig } from './config.js';
 import { TOOLS, TOOLS_BY_NAME, type FreelanceTool } from './tools.js';
 
 const SERVER_NAME = 'freelance';
-const SERVER_VERSION = '0.1.0';
+
+/*
+ * Read off package.json rather than restated here. The version a client sees in
+ * the MCP handshake is the version it can go install, and a hand-maintained
+ * constant guarantees those two drift apart at the first release somebody
+ * publishes without remembering to edit this line - which is exactly what
+ * happened at 0.1.1. Resolution is relative to this file, so it finds the
+ * package root from `dist/` both in the repo and under `node_modules/`.
+ */
+const SERVER_VERSION: string = createRequire(import.meta.url)('../package.json').version;
 
 const config = loadConfig();
 const client = new FreelanceClient(config);

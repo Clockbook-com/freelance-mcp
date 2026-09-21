@@ -102,30 +102,41 @@ Revoke at any time with `revokeFreelanceAgentIdentity(agentId: "agent_…")`. It
 bites on the agent's very next request, because liveness is part of the
 per-request lookup and not a nightly sweep.
 
-### 4. Build the server
+### 4. Get the server
 
-Clone this repository and build it. There is nothing to install from a
-registry — the server runs from `dist/`, which is gitignored, so the build is
-not optional:
+It is published to npm as
+[`@clockbook-app/freelance-mcp`](https://www.npmjs.com/package/@clockbook-app/freelance-mcp),
+and the shortest path is not to install it at all — let your MCP client fetch
+it on demand with `npx`. That is the wiring shown in the next step, and it is
+the one to prefer: there is no path to get wrong and no copy to go stale.
+
+To check it runs before wiring anything up:
+
+```bash
+npx -y @clockbook-app/freelance-mcp
+```
+
+It should print a `[freelance-mcp] ready` line naming the endpoint and the tool
+count, then sit waiting for MCP traffic on stdin. Ctrl-C out of it.
+
+#### From a clone instead
+
+Build from source if you are changing the server, or if you would rather pin an
+exact tree than a version range. The server runs from `dist/`, which is
+gitignored, so the build is not optional:
 
 ```bash
 git clone https://github.com/Clockbook-com/freelance-mcp.git
 cd freelance-mcp
 npm install
 npm run build
+echo "$PWD/dist/index.js"   # the absolute path the next step needs
 ```
 
 `npm run build` also validates all 23 tool documents against the freelance
 subgraph SDL when it can reach it. From a standalone clone it cannot, so it
 says so and skips rather than failing a check it has no way to perform — see
 the note at the top of this file for how to run it anyway.
-
-Note the absolute path of `dist/index.js` when this finishes; the next step
-needs it:
-
-```bash
-echo "$PWD/dist/index.js"
-```
 
 ### 5. Wire it into your client
 
@@ -136,8 +147,8 @@ echo "$PWD/dist/index.js"
 {
     "mcpServers": {
         "freelance": {
-            "command": "node",
-            "args": ["/absolute/path/to/freelance-mcp/dist/index.js"],
+            "command": "npx",
+            "args": ["-y", "@clockbook-app/freelance-mcp"],
             "env": {
                 "FREELANCE_API_TOKEN": "<your platform API token>",
                 "FREELANCE_GRAPHQL_URL": "https://freelance-backend.clockbook-app-v10.cdebase.dev/graphql"
@@ -147,8 +158,7 @@ echo "$PWD/dist/index.js"
 }
 ```
 
-Restart the client. The absolute path is not optional — the client does not run
-this from your shell's working directory.
+Restart the client.
 
 **Claude Code** — same JSON under `mcpServers`, or:
 
@@ -156,11 +166,22 @@ this from your shell's working directory.
 claude mcp add freelance \
   --env FREELANCE_API_TOKEN=<your platform API token> \
   --env FREELANCE_GRAPHQL_URL=https://freelance-backend.clockbook-app-v10.cdebase.dev/graphql \
-  -- node /absolute/path/to/freelance-mcp/dist/index.js
+  -- npx -y @clockbook-app/freelance-mcp
 ```
 
 **Cursor** — `.cursor/mcp.json` in the project, or `~/.cursor/mcp.json`
 globally. Same `mcpServers` shape as Claude Desktop.
+
+**Running from a clone instead?** Swap the command for `node` and the args for
+the one absolute path you printed in step 4:
+
+```json
+"command": "node",
+"args": ["/absolute/path/to/freelance-mcp/dist/index.js"]
+```
+
+The absolute path is not optional there — the client does not run this from
+your shell's working directory.
 
 ### 6. First test call
 
