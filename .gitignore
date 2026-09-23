@@ -6,6 +6,6 @@ dist/
 config.json
 .npmrc
 
-# secrets (un-ignored by the dropper so its own .env could be committed)
+# secrets - never commit these
 .env
 **/.env
