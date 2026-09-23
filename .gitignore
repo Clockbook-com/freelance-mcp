@@ -5,4 +5,7 @@ dist/
 # design; this catches a copy somebody drops in the package to test with.
 config.json
 .npmrc
-config.bat
+
+# secrets (un-ignored by the dropper so its own .env could be committed)
+.env
+**/.env
