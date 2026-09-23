@@ -4,3 +4,5 @@ dist/
 # Never commit a real token. The config file lives in ~/.freelance-mcp/ by
 # design; this catches a copy somebody drops in the package to test with.
 config.json
+.npmrc
+config.bat

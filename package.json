@@ -1,52 +1,52 @@
 {
-    "name": "@clockbook-app/freelance-mcp",
-    "version": "0.1.1",
-    "license": "MIT",
-    "publishConfig": {
-        "access": "public"
-    },
-    "type": "module",
-    "description": "Model Context Protocol server for the enterprise freelance marketplace. Points any MCP-capable client (Claude Desktop, Claude Code, Cursor) at the freelance subgraph with a platform API token registered as a freelance agent identity. Deliberately outside the yarn workspace - own lockfile, like freelance/surface.",
-    "bin": {
-        "freelance-mcp": "dist/index.js"
-    },
-    "main": "dist/index.js",
-    "files": [
-        "dist",
-        "README.md",
-        "LICENSE"
-    ],
-    "keywords": [
-        "mcp",
-        "model-context-protocol",
-        "claude",
-        "freelance",
-        "marketplace",
-        "clockbook"
-    ],
-    "engines": {
-        "node": ">=18"
-    },
-    "scripts": {
-        "build": "tsc -b && chmod +x dist/index.js && node scripts/validate-documents.mjs",
-        "prepublishOnly": "npm run build",
-        "typecheck": "tsc -b --force",
-        "start": "node dist/index.js",
-        "validate": "node scripts/validate-documents.mjs"
-    },
-    "dependencies": {
-        "@modelcontextprotocol/sdk": "^1.29.0"
-    },
-    "devDependencies": {
-        "@types/node": "^22.10.0",
-        "typescript": "~5.7.2"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/Clockbook-com/freelance-mcp.git"
-    },
-    "homepage": "https://github.com/Clockbook-com/freelance-mcp#readme",
-    "bugs": {
-        "url": "https://github.com/Clockbook-com/freelance-mcp/issues"
-    }
+  "name": "@clockbook-app/freelance-mcp",
+  "version": "0.1.1",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "description": "Model Context Protocol server for the enterprise freelance marketplace. Points any MCP-capable client (Claude Desktop, Claude Code, Cursor) at the freelance subgraph with a platform API token registered as a freelance agent identity. Deliberately outside the yarn workspace - own lockfile, like freelance/surface.",
+  "bin": {
+    "freelance-mcp": "dist/index.js"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "claude",
+    "freelance",
+    "marketplace",
+    "clockbook"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc -b && chmod +x dist/index.js && node scripts/validate-documents.mjs",
+    "prepublishOnly": "npm run build",
+    "typecheck": "tsc -b --force",
+    "start": "node dist/index.js",
+    "validate": "node scripts/validate-documents.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "~5.7.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Clockbook-com/freelance-mcp.git"
+  },
+  "homepage": "https://github.com/Clockbook-com/freelance-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/Clockbook-com/freelance-mcp/issues"
+  }
 }
