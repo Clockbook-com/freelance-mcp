@@ -151,7 +151,7 @@ the note at the top of this file for how to run it anyway.
             "args": ["-y", "@clockbook-app/freelance-mcp"],
             "env": {
                 "FREELANCE_API_TOKEN": "<your platform API token>",
-                "FREELANCE_GRAPHQL_URL": "https://freelance-backend.clockbook-app-v10.cdebase.dev/graphql"
+                "FREELANCE_GRAPHQL_URL": "https://freelance-backend.yantra-app-v1.cdebase.dev/graphql"
             }
         }
     }
@@ -165,7 +165,7 @@ Restart the client.
 ```bash
 claude mcp add freelance \
   --env FREELANCE_API_TOKEN=<your platform API token> \
-  --env FREELANCE_GRAPHQL_URL=https://freelance-backend.clockbook-app-v10.cdebase.dev/graphql \
+  --env FREELANCE_GRAPHQL_URL=https://freelance-backend.yantra-app-v1.cdebase.dev/graphql \
   -- npx -y @clockbook-app/freelance-mcp
 ```
 
@@ -205,7 +205,7 @@ Then try a read that touches the marketplace:
 | Setting | Environment variable | Config file key | Default |
 | --- | --- | --- | --- |
 | API token | `FREELANCE_API_TOKEN` | `apiToken` | *(none — calls refuse)* |
-| Endpoint | `FREELANCE_GRAPHQL_URL` | `graphqlUrl` | `https://freelance-backend.clockbook-app-v10.cdebase.dev/graphql` |
+| Endpoint | `FREELANCE_GRAPHQL_URL` | `graphqlUrl` | `https://freelance-backend.yantra-app-v1.cdebase.dev/graphql` |
 
 **Environment wins over the file, always.** The config file exists for the case
 the env lane handles badly — driving three clients without pasting the same
@@ -215,16 +215,21 @@ secret into three JSON files that sync to three different places:
 // ~/.freelance-mcp/config.json
 {
     "apiToken": "…",
-    "graphqlUrl": "https://freelance-backend.clockbook-app-v10.cdebase.dev/graphql"
+    "graphqlUrl": "https://freelance-backend.yantra-app-v1.cdebase.dev/graphql"
 }
 ```
 
 Point `FREELANCE_MCP_CONFIG` elsewhere if you want the file somewhere else.
 
-**Set the endpoint if you are not on clockbook-app-v10.** A deployment plane is
+**Set the endpoint if you are not on yantra-app-v1.** A deployment plane is
 a whole separate database, so a request that lands on the wrong one does not
 fail — it silently addresses an organization you do not have. The host is
 `freelance-backend.<your-plane>`.
+
+Note that `clockbook-app-v10` is also live, and the installed
+`yantra-job-freelancer` connector (v1.1.1) still names it. A token from one
+plane gets `Not a member of organization "<org>"` on the other — a 403, not a
+connection error, so the address looks fine right up until it is not.
 
 ---
 
