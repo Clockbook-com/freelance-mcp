@@ -12,13 +12,12 @@
  * to be TOLD, and the only question is what happens when nobody tells it.
  *
  * The answer is a default rather than a refusal, and the default is
- * clockbook-app-v10 - the same host the installed `yantra-job-freelancer`
- * connector carries as its `meta.baseUrl`. A server that refuses to start until
- * somebody sets two environment variables is a server most people never get
- * working; one that starts pointed at the plane almost everybody wants, and says
- * which plane that is on every refusal, is recoverable. Anybody on another plane
- * sets `FREELANCE_GRAPHQL_URL` once, in the same JSON block where they set the
- * token.
+ * yantra-app-v1 - the plane the freelance surface itself is built against. A
+ * server that refuses to start until somebody sets two environment variables is
+ * a server most people never get working; one that starts pointed at the plane
+ * almost everybody wants, and says which plane that is on every refusal, is
+ * recoverable. Anybody on another plane sets `FREELANCE_GRAPHQL_URL` once, in
+ * the same JSON block where they set the token.
  *
  * ## Why the token is env-first, file-second
  *
@@ -47,12 +46,20 @@ import { join } from 'node:path';
 /**
  * The freelance subgraph on the plane most installations mean.
  *
- * Taken from `~/.cdecli/connectors/yantra-job-freelancer/package.json`
- * (`cdmConnector.meta.baseUrl`), which is the same endpoint the existing
- * connector talks to - so a person who has that connector working and this
- * server not working is looking at a token problem, never an address problem.
+ * This is the host the freelance surface is built against, and the one an
+ * account minted on the current platform authenticates to.
+ *
+ * KNOWN DISAGREEMENT, recorded so the next person does not have to rediscover
+ * it: `~/.cdecli/connectors/yantra-job-freelancer/package.json` (v1.1.1) still
+ * carries `cdmConnector.meta.baseUrl` = clockbook-app-v10, which this constant
+ * used to mirror. That plane is live - it answers, and rejects a token from
+ * another org with `Not a member of organization "<org>"` rather than a
+ * transport error - so the two are genuinely separate databases and not a
+ * typo. The surface package references yantra-app-v1 exclusively, so the
+ * connector is believed to be the stale one; if you are on clockbook-app-v10,
+ * set `FREELANCE_GRAPHQL_URL` and nothing here has to change.
  */
-export const DEFAULT_GRAPHQL_URL = 'https://freelance-backend.clockbook-app-v10.cdebase.dev/graphql';
+export const DEFAULT_GRAPHQL_URL = 'https://freelance-backend.yantra-app-v1.cdebase.dev/graphql';
 
 /** `~/.freelance-mcp/config.json`, unless `FREELANCE_MCP_CONFIG` names another. */
 const DEFAULT_CONFIG_PATH = join(homedir(), '.freelance-mcp', 'config.json');
